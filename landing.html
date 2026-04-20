@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1B3A2D;
+            --accent: #C8963E;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: white;
+            color: var(--primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        input[type="email"] {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 10px;
+        }
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: darken(var(--accent), 10%);
+        }
+    </style>
+    <title>Sign Up | WorkableAI</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Join WorkableAI</h1>
+        <p>Sign up to stay updated and get exclusive access to features.</p>
+        <form action="/submit-email" method="POST">
+            <input type="email" name="email" placeholder="Enter your email" required />
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+</body>
+</html>
