@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Worksheet Generator</title>
+  <title>WorkableAI</title>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -257,6 +257,26 @@
           <option value="easy">Easy</option>
           <option value="medium" selected>Medium</option>
           <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Time Limit (minutes)</label>
+        <select id="timeLimit">
+          <option value="">No limit</option>
+          <option value="30">30 minutes</option>
+          <option value="45">45 minutes</option>
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120">2 hours</option>
+          <option value="180">3 hours (Full JEE)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Marks per Question</label>
+        <select id="marksPerQ">
+          <option value="1">1 mark each</option>
+          <option value="2">2 marks each</option>
+          <option value="4" selected>4 marks each (JEE)</option>
         </select>
       </div>
       <div class="field">
@@ -633,13 +653,19 @@
     const numQ = document.getElementById('numQuestions').value || '10';
     const difficulty = document.getElementById('difficulty').value || 'medium';
     const instName = getInstituteName();
+    const timeLimitPrev = document.getElementById('timeLimit').value;
+    const marksPerQPrev = document.getElementById('marksPerQ').value;
+    const totalMarksPrev = parseInt(numQ) * parseInt(marksPerQPrev);
 
     const lines = text.split('\n');
     let html = '<div class="ws-paper">';
     html += '<div class="ws-header-bar">AI WORKSHEET GENERATOR</div>';
     html += '<div class="ws-institute' + (instName ? '' : ' blank') + '">' + (instName || 'Your Institute Name') + '</div>';
     html += '<div class="ws-title">' + topic.toUpperCase() + '</div>';
-    html += '<div class="ws-meta">' + board + (board && grade ? ' · ' : '') + grade + ' · ' + numQ + ' Questions · ' + difficulty.charAt(0).toUpperCase() + difficulty.slice(1) + ' Level</div>';
+    let metaPrev = board + (board && grade ? ' · ' : '') + grade + ' · ' + numQ + ' Questions · ' + difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    if (timeLimitPrev) metaPrev += ' · Time: ' + timeLimitPrev + ' min';
+    metaPrev += ' · Total Marks: ' + totalMarksPrev;
+    html += '<div class="ws-meta">' + metaPrev + '</div>';
     html += '<hr class="ws-divider-gold"/>';
     html += '<div class="ws-fields"><div class="ws-field"><span>NAME</span><br/>&nbsp;</div><div class="ws-field"><span>DATE</span><br/>&nbsp;</div><div class="ws-field"><span>ROLL NO</span><br/>&nbsp;</div><div class="ws-field"><span>MARKS</span><br/>&nbsp;</div></div>';
     html += '<hr class="ws-divider"/>';
@@ -649,7 +675,7 @@
       const t = line.trim();
       if (!t) { html += '<div style="height:6px"></div>'; continue; }
 
-      if (/^(ANSWER KEY|ANSWERS)/i.test(t)) {
+      if (/^(ANSWER KEY|ANSWERS|ANS KEY|ANSWER SHEET)/i.test(t)) {
         html += '<div class="ws-answer-key"><div class="ws-section">Answer Key</div>';
         inAnswerKey = true; continue;
       }
@@ -686,6 +712,9 @@
     const board = document.getElementById('board').value;
     const qtype = document.querySelector('input[name="qtype"]:checked').value;
     const instructions = document.getElementById('instructions').value.trim();
+    const timeLimit = document.getElementById('timeLimit').value;
+    const marksPerQ = document.getElementById('marksPerQ').value;
+    const totalMarks = parseInt(numQ) * parseInt(marksPerQ);
     const styleDesc = document.getElementById('styleDesc').value.trim();
 
     if (!topic) { alert('Please enter a subject or topic.'); return; }
@@ -706,16 +735,44 @@
     const hasStyleImg = styleImageBase64.length > 0;
 
     // Build system prompt
-    const system = `You are an expert Indian school teacher who creates professional, print-ready worksheets.
-You always produce complete, well-structured worksheets that are ready to hand out to students.
-Never add commentary, preamble, or explanation — output ONLY the worksheet content itself.
-CRITICAL FORMATTING RULES:
+    const system = `You are a senior JEE Advanced and NEET question paper setter with 15+ years of experience at Allen, Aakash, and FIITJEE. You set papers that match the exact official NTA/JEE Advanced pattern.
+
+QUESTION QUALITY RULES:
+- JEE Advanced: multi-concept problems requiring 3-5 steps of reasoning. Wrong options must reflect common student mistakes, not random values.
+- JEE Mains: NTA pattern, solvable in under 2 minutes, 4 marks correct -1 incorrect.
+- NEET: strictly NCERT-based, factual, precise. Wrong options must be plausible misconceptions.
+- Never write trivial recall questions.
+
+JEE ADVANCED EXACT PAPER FORMAT (follow this precisely):
+
+GENERAL INSTRUCTIONS:
+1. Duration: 3 Hours | Maximum Marks: 180
+2. This paper contains THREE sections per subject (Physics, Chemistry, Mathematics).
+3. Bubbling instructions, negative marking rules must be stated per section.
+
+SECTION I - SINGLE CORRECT ANSWER TYPE
+- Contains FOUR (04) questions.
+- Each question has FOUR options (A), (B), (C), (D). ONLY ONE is correct.
+- Marking: Full Marks +3 | Zero Marks 0 | Negative Marks -1
+
+SECTION II - ONE OR MORE THAN ONE CORRECT TYPE
+- Contains THREE (03) questions.
+- Each question has FOUR options. ONE OR MORE THAN ONE may be correct.
+- Marking: Full Marks +4 | Partial Marks +3/+2/+1 | Zero Marks 0 | Negative Marks -2
+
+SECTION III - NON-NEGATIVE INTEGER TYPE
+- Contains SIX (06) questions.
+- Answer to each question is a NON-NEGATIVE INTEGER (0 to 9).
+- Marking: Full Marks +4 | Zero Marks 0 | No negative marking.
+
+FORMAT RULES (CRITICAL):
 - Never use markdown. No asterisks, no **bold**, no _italic_, no --- dividers.
-- Never use &nbsp; or any HTML entities.
-- Number questions as: Q1. Q2. Q3. etc.
-- MCQ options as: A) B) C) D) with a single space after.
-- Sections as plain uppercase labels: SECTION A, INSTRUCTIONS, ANSWER KEY
-- Keep formatting clean and plain — this is for print.`;
+- Never use &nbsp; or HTML entities.
+- Plain text only — for print.
+- Number questions as Q1. Q2. etc.
+- MCQ options on separate lines: A) B) C) D)
+- State marking scheme at the start of each section exactly as shown above.
+- End with ANSWER KEY showing section-wise answers.`;
 
     // Build user message content array
     const userContent = [];
@@ -748,6 +805,10 @@ BOARD: ${board}
 NUMBER OF QUESTIONS: ${numQ}
 QUESTION TYPE: ${qtype}
 DIFFICULTY: ${difficulty}
+TIME LIMIT: ${timeLimit ? timeLimit + ' minutes' : 'No time limit'}
+MARKS PER QUESTION: ${marksPerQ} marks
+TOTAL MARKS: ${totalMarks}
+FORMAT: Formal test paper with instructions section, question numbers, marks in brackets, and answer key.
 ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
 
     if (hasBook) {
@@ -961,6 +1022,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     const imgW = uw, imgH = 55;
 
     let pageNum = 1;
+    let inAnswerKey = false;
 
     function drawPageHeader() {
       doc.setDrawColor(27, 58, 45);
@@ -973,6 +1035,9 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       doc.setFontSize(8);
       doc.setTextColor(27, 58, 45);
       const instName = getInstituteName();
+      const timeLimit = document.getElementById('timeLimit').value;
+      const marksPerQ = document.getElementById('marksPerQ').value;
+      const totalMarks = parseInt(document.getElementById('numQuestions').value) * parseInt(marksPerQ);
       doc.text(instName || '______________________________', 210/2, 11, { align: 'center' });
       doc.setFontSize(6.5);
       doc.setFont('helvetica', 'normal');
@@ -998,7 +1063,12 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       doc.setFontSize(8.5);
       doc.setTextColor(100, 100, 100);
       const diff = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-      doc.text(numQ + ' Questions  ·  ' + diff + ' Level', 210/2, y, { align: 'center' });
+      const timeLimitVal = document.getElementById('timeLimit').value;
+      const marksPerQVal = document.getElementById('marksPerQ').value;
+      const totalMarksVal = parseInt(numQ) * parseInt(marksPerQVal);
+      let metaLine = numQ + ' Questions  ·  ' + diff + '  ·  Total: ' + totalMarksVal + ' Marks';
+      if (timeLimitVal) metaLine += '  ·  Time: ' + timeLimitVal + ' min';
+      doc.text(metaLine, 210/2, y, { align: 'center' });
       y += 5;
 
       doc.setDrawColor(200, 150, 62);
@@ -1047,7 +1117,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(7.5);
       doc.setTextColor(180, 180, 180);
-      doc.text('AI Generated Worksheet', margin, ph - 7);
+      doc.text('', margin, ph - 7);
       doc.text('', 210 - rmargin, ph - 7, { align: 'right' });
       doc.setDrawColor(220, 220, 220);
       doc.setLineWidth(0.2);
@@ -1063,22 +1133,44 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       }
     }
 
+    let lastLineWasOption = false;
     function renderLine(line) {
       const trimmed = line.trim();
-      if (!trimmed) { y += 3; return; }
+      if (!trimmed) {
+        if (lastLineWasOption) {
+          // Add working space box after MCQ options
+          checkPageBreak(18);
+          doc.setDrawColor(220, 220, 220);
+          doc.setLineWidth(0.2);
+          doc.rect(margin, y, uw, 14);
+          doc.setFont('helvetica', 'italic');
+          doc.setFontSize(7);
+          doc.setTextColor(180, 180, 180);
+          doc.text('Working space', margin + 3, y + 5);
+          y += 18;
+          lastLineWasOption = false;
+        } else {
+          y += 3;
+        }
+        return;
+      }
 
-      if (/^(ANSWER KEY|ANSWERS)/i.test(trimmed)) {
-        checkPageBreak(12);
+      if (/^(ANSWER KEY|ANSWERS|ANS KEY|ANSWER SHEET)/i.test(trimmed)) {
+        checkPageBreak(20);
+        // New page for answer key always
+        drawFooter();
+        doc.addPage();
+        pageNum++;
+        drawContinuationHeader(pageNum);
         y += 3;
-        doc.setDrawColor(27, 58, 45);
-        doc.setLineWidth(0.4);
-        doc.line(margin, y, 210 - rmargin, y);
-        y += 5;
+        doc.setFillColor(27, 58, 45);
+        doc.rect(margin, y - 4, uw, 12, 'F');
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
-        doc.setTextColor(27, 58, 45);
-        doc.text(trimmed, margin, y);
-        y += 7;
+        doc.setFontSize(11);
+        doc.setTextColor(255, 255, 255);
+        doc.text('ANSWER KEY', margin + 4, y + 4);
+        y += 14;
+        inAnswerKey = true;
         return;
       }
 
@@ -1097,10 +1189,11 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       if (/^[A-D]\)/i.test(trimmed)) {
         checkPageBreak(6);
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9.5);
+        doc.setFontSize(10);
         doc.setTextColor(60, 60, 60);
         const wrapped = doc.splitTextToSize(trimmed, uw - 8);
-        wrapped.forEach(l => { checkPageBreak(6); doc.text(l, margin + 8, y); y += 5.5; });
+        wrapped.forEach(l => { checkPageBreak(6); doc.text(l, margin + 8, y); y += 6; });
+        if (/^D\)/i.test(trimmed)) lastLineWasOption = true;
         return;
       }
 
@@ -1121,9 +1214,15 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       }
 
       checkPageBreak(6);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9.5);
-      doc.setTextColor(40, 40, 40);
+      if (inAnswerKey) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9.5);
+        doc.setTextColor(27, 58, 45);
+      } else {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        doc.setTextColor(40, 40, 40);
+      }
       const wrapped = doc.splitTextToSize(trimmed, uw);
       wrapped.forEach(l => { checkPageBreak(6); doc.text(l, margin, y); y += 5.5; });
     }
