@@ -3,64 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1B3A2D;
-            --accent: #C8963E;
-        }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: white;
-            color: var(--primary);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        input[type="email"] {
-            width: 300px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-right: 10px;
-        }
-        button {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: darken(var(--accent), 10%);
-        }
-    </style>
-    <title>Sign Up | WorkableAI</title>
+    <title>WorkableAI - High-Converting Landing Page</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Join WorkableAI</h1>
-        <p>Sign up to stay updated and get exclusive access to features.</p>
-        <form action="/submit-email" method="POST">
-            <input type="email" name="email" placeholder="Enter your email" required />
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
+    <header class="hero-section">
+        <h1>Welcome to WorkableAI</h1>
+        <p>Your AI solution for a better tomorrow, now with live worksheet previews!</p>
+        <button onclick="window.location.href='#cta'">Get Started</button>
+    </header>
+
+    <section class="features-section">
+        <h2>Features</h2>
+        <div class="feature-card">
+            <h3>Live Worksheet Preview</h3>
+            <p>Instantly see your changes as you edit!</p>
+        </div>
+        <div class="feature-card">
+            <h3>User-Friendly Interface</h3>
+            <p>Designed for ease of use, no experience required!</p>
+        </div>
+        <div class="feature-card">
+            <h3>24/7 Support</h3>
+            <p>Our team is here to help whenever you need it!</p>
+        </div>
+    </section>
+
+    <section class="how-it-works-section">
+        <h2>How It Works</h2>
+        <p>Follow these simple steps to start using WorkableAI:</p>
+        <ol>
+            <li>Sign up for an account.</li>
+            <li>Create your first worksheet.</li>
+            <li>Get instant feedback with live previews.</li>
+        </ol>
+    </section>
+
+    <section class="cta-section" id="cta">
+        <h2>Ready to dive in?</h2>
+        <button onclick="window.location.href='signup.html'">Sign Up Now</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 WorkableAI. All rights reserved.</p>
+        <p>Contact us: support@workableai.com</p>
+    </footer>
 </body>
 </html>
