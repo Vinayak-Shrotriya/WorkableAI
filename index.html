@@ -93,6 +93,7 @@
     .btn-regenerate{flex:1;padding:13px;background:transparent;color:var(--primary);border:1.5px solid var(--primary);border-radius:10px;font-family:'Fraunces',Georgia,serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}
     .btn-regenerate:hover{background:var(--primary);color:#fff}
     /* API key setup */
+    #apiSetupCard{display:none!important}
     .api-setup{background:#FAFAF7;border:1.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px}
     .api-setup p{font-size:.9rem;color:var(--muted);margin-bottom:10px}
     .api-row{display:flex;gap:10px}
@@ -394,6 +395,10 @@
 
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const WORKABLE_BACKEND_ENDPOINT = '/api/generate-worksheet';
+  try { localStorage.setItem('workableai_key', 'backend-managed'); } catch(e) {}
+  const WORKABLE_BACKEND_ENDPOINT = '/api/generate-worksheet';
+  try { localStorage.setItem('workableai_key', 'backend-managed'); } catch(e) {}
 
   let bookImages = []; // [{base64, mime}]
   let styleImageBase64 = '';
@@ -404,17 +409,7 @@
   let selectedImageDataUrl = '';
 
   // ── API KEY ──
-  function saveApiKey() {
-    const key = document.getElementById('apiKeyInput').value.trim();
-    if (!key) {
-      alert('Please paste your Anthropic API key.');
-      return;
-    }
-    localStorage.setItem('workableai_key', key);
-    document.getElementById('apiSaved').classList.add('active');
-    document.getElementById('apiKeyInput').value = '';
-    setTimeout(() => document.getElementById('apiSetupCard').style.display = 'none', 1200);
-  }
+  function saveApiKey() {}
 
 
 
@@ -838,13 +833,10 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     setLoadingStatus('Generating worksheet...');
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch(WORKABLE_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
@@ -1251,6 +1243,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     const g = grade || 'class';
     doc.save((t + '_' + g + '_worksheet.pdf').replace(/\s+/g,'_').toLowerCase());
   }
+
 </script>
 </body>
 </html>
