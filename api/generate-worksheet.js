@@ -1,39 +1,43 @@
-// Improved error handling and request validation
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-const express = require('express');
-const router = express.Router();
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-// Validation utility function
-const validateRequest = (req) => {
-    const { model, messages } = req.body;
-    const errors = [];
-    
-    if (!model) {
-        errors.push('Model is required.');
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'ANTHROPIC_API_KEY is not configured on the server.' });
+  }
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: data?.error?.message || `Anthropic request failed with status ${response.status}.`
+      });
     }
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-        errors.push('Messages must be a non-empty array.');
-    }
-    
-    return errors;
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown server error'
+    });
+  }
 };
-
-// Error logging utility
-const logError = (error) => {
-    console.error(`Error: ${error}`);
-};
-
-router.post('/generate-worksheet', (req, res) => {
-    const errors = validateRequest(req);
-    if (errors.length > 0) {
-        logError(errors.join('\n'));
-        return res.status(400).json({ success: false, errors });
-    }
-    
-    // Existing logic for handling the request
-    // ...
-
-    res.status(200).json({ success: true, data: 'Worksheet generated successfully.' });
-});
-
-module.exports = router;

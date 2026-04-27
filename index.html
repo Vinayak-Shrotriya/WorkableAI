@@ -103,7 +103,7 @@
     .api-saved{display:none;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--success);margin-top:8px}
     .api-saved.active{display:block}
     footer{text-align:center;margin-top:48px;color:var(--muted);font-size:.82rem;font-family:'JetBrains Mono',monospace}
-    /* ── INSTITUTE BAR ── */
+    /* â”€â”€ INSTITUTE BAR â”€â”€ */
     .institute-bar{background:var(--accent-light);border:1.5px solid #E8C97A;border-radius:10px;padding:12px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .institute-bar .inst-icon{font-size:1.2rem;flex-shrink:0}
     .institute-bar p{font-size:.85rem;color:#8B6520;font-family:'JetBrains Mono',monospace;flex:1;min-width:160px}
@@ -117,7 +117,7 @@
     .inst-saved-name.active{display:inline}
     .inst-change{font-size:.75rem;font-family:'JetBrains Mono',monospace;color:var(--accent);cursor:pointer;text-decoration:underline;margin-left:8px}
 
-    /* ── PRESETS ── */
+    /* â”€â”€ PRESETS â”€â”€ */
     .preset-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
     .preset-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:.8rem;font-family:'JetBrains Mono',monospace;color:var(--muted);cursor:pointer;background:var(--bg);transition:all .2s;white-space:nowrap}
     .preset-chip:hover{border-color:var(--primary);color:var(--primary)}
@@ -128,7 +128,7 @@
     .btn-save-preset:hover{border-color:var(--accent);color:var(--accent)}
     .rename-input{padding:4px 10px;border:1.5px solid var(--accent);border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text);background:#fff;outline:none;width:140px}
 
-    /* ── IMAGE PICKER ── */
+    /* â”€â”€ IMAGE PICKER â”€â”€ */
     #image-section{display:none;margin-top:0}
     #image-section.active{display:block}
     .img-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
@@ -175,25 +175,10 @@
     </div>
   </header>
 
-  <!-- API KEY SETUP -->
-  <div class="card" id="apiSetupCard">
-    <div class="card-title">
-      <span>One-Time Setup</span>
-      <span class="step-badge">REQUIRED</span>
-    </div>
-    <p style="font-size:.95rem;color:var(--muted);margin-bottom:16px">Enter your Anthropic API key to power the worksheet generator. It is saved only in your browser — never sent anywhere else.</p>
-    <div class="api-row">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..."/>
-      <button onclick="saveApiKey()">Save Key</button>
-    </div>
-    <div class="api-saved" id="apiSaved">Key saved. You are ready to generate worksheets.</div>
-    <p style="font-size:.8rem;color:var(--muted);margin-top:12px;font-family:'JetBrains Mono',monospace">Get a free key at console.anthropic.com → API Keys</p>
-  </div>
-
   <!-- INSTITUTE NAME BAR -->
   <div class="institute-bar" id="instituteBar">
-    <div class="inst-icon">🏫</div>
-    <p id="instPrompt"><strong>Add your institute name</strong> — it will appear on every worksheet PDF you generate.</p>
+    <div class="inst-icon">ðŸ«</div>
+    <p id="instPrompt"><strong>Add your institute name</strong> â€” it will appear on every worksheet PDF you generate.</p>
     <div class="inst-row" id="instInputRow">
       <input type="text" id="instNameInput" placeholder="e.g. Shri Ram JEE Academy, Ranchi" maxlength="60"/>
       <button onclick="saveInstituteName()">Save</button>
@@ -212,10 +197,10 @@
     </div>
     <div class="preset-bar" id="presetBar">
       <!-- Default presets -->
-      <span class="preset-chip" onclick="loadPreset('jee-adv-phy')">⚡ JEE Adv · Physics</span>
-      <span class="preset-chip" onclick="loadPreset('jee-main-chem')">🧪 JEE Mains · Chemistry</span>
-      <span class="preset-chip" onclick="loadPreset('neet-bio')">🧬 NEET · Biology</span>
-      <span class="preset-chip" onclick="loadPreset('jee-main-math')">📐 JEE Mains · Maths</span>
+      <span class="preset-chip" onclick="loadPreset('jee-adv-phy')">âš¡ JEE Adv Â· Physics</span>
+      <span class="preset-chip" onclick="loadPreset('jee-main-chem')">ðŸ§ª JEE Mains Â· Chemistry</span>
+      <span class="preset-chip" onclick="loadPreset('neet-bio')">ðŸ§¬ NEET Â· Biology</span>
+      <span class="preset-chip" onclick="loadPreset('jee-main-math')">ðŸ“ JEE Mains Â· Maths</span>
     </div>
     <div style="display:flex;gap:10px;align-items:center;margin-top:4px">
       <button class="btn-save-preset" onclick="saveCurrentPreset()">+ Save current settings as preset</button>
@@ -236,13 +221,13 @@
         <select id="grade">
           <option value="">Select grade...</option>
           <option>Class 11</option><option>Class 12</option><option>Dropper (JEE/NEET)</option>
-          <option disabled style="color:#ccc">── Foundation ──</option>
+          <option disabled style="color:#ccc">â”€â”€ Foundation â”€â”€</option>
           <option>Class 1</option><option>Class 2</option><option>Class 3</option>
           <option>Class 4</option><option>Class 5</option><option>Class 6</option>
           <option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option>
         </select>
       </div>
-      <div class="field"
+      <div class="field">
         <label>No. of Questions</label>
         <select id="numQuestions">
           <option value="5">5 questions</option>
@@ -309,13 +294,13 @@
 
   <!-- STEP 2: BOOK PHOTOS -->
   <div class="card">
-    <div class="card-title"><span>Book Page Photos</span><span class="step-badge">STEP 2 — OPTIONAL</span></div>
-    <div class="hint">✦ Take photos of your book pages — Claude will read them and generate questions from that content only</div>
+    <div class="card-title"><span>Book Page Photos</span><span class="step-badge">STEP 2 â€” OPTIONAL</span></div>
+    <div class="hint">âœ¦ Take photos of your book pages â€” Claude will read them and generate questions from that content only</div>
     <div class="upload-zone" id="bookUploadZone">
       <input type="file" id="bookFile" accept="image/*" multiple onchange="handleBookImages(this)"/>
-      <div class="upload-icon">📸</div>
+      <div class="upload-icon">ðŸ“¸</div>
       <p><strong>Click to upload</strong> or drag & drop photos of book pages</p>
-      <p class="file-formats">JPG · PNG · WEBP · Up to 5 pages · Max 5MB each</p>
+      <p class="file-formats">JPG Â· PNG Â· WEBP Â· Up to 5 pages Â· Max 5MB each</p>
     </div>
     <div class="file-status" id="bookFileStatus"></div>
     <div id="book-img-previews" style="display:none;margin-top:14px">
@@ -326,13 +311,13 @@
 
   <!-- STEP 3: STYLE -->
   <div class="card">
-    <div class="card-title"><span>Sample Worksheet Style</span><span class="step-badge">STEP 3 — OPTIONAL</span></div>
-    <div class="hint">✦ Upload a photo of a worksheet — AI will copy its style and format</div>
+    <div class="card-title"><span>Sample Worksheet Style</span><span class="step-badge">STEP 3 â€” OPTIONAL</span></div>
+    <div class="hint">âœ¦ Upload a photo of a worksheet â€” AI will copy its style and format</div>
     <div class="upload-zone" id="styleUploadZone">
       <input type="file" id="styleFile" accept="image/*" onchange="handleStyleFile(this)"/>
-      <div class="upload-icon">🖼️</div>
+      <div class="upload-icon">ðŸ–¼ï¸</div>
       <p><strong>Click to upload</strong> a photo or screenshot of a worksheet</p>
-      <p class="file-formats">JPG · PNG · WEBP · Max 5MB</p>
+      <p class="file-formats">JPG Â· PNG Â· WEBP Â· Max 5MB</p>
     </div>
     <div class="file-status" id="styleFileStatus"></div>
     <div class="preview-img-wrap" id="stylePreview"><img id="stylePreviewImg" src="" alt="Sample worksheet"/></div>
@@ -395,9 +380,7 @@
 
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-  const WORKABLE_BACKEND_ENDPOINT = '/api/generate-worksheet,js';
-  try { localStorage.setItem('workableai_key', 'backend-managed'); } catch(e) {}
-  try { localStorage.setItem('workableai_key', 'backend-managed'); } catch(e) {}
+  const WORKABLE_BACKEND_ENDPOINT = '/api/generate-worksheet';
 
   let bookImages = []; // [{base64, mime}]
   let styleImageBase64 = '';
@@ -407,12 +390,12 @@
   let selectedImagePos = 'top';
   let selectedImageDataUrl = '';
 
-  // ── API KEY ──
+  // â”€â”€ API KEY â”€â”€
   function saveApiKey() {}
 
 
 
-  // ── INSTITUTE NAME ──
+  // â”€â”€ INSTITUTE NAME â”€â”€
   function saveInstituteName() {
     const name = document.getElementById('instNameInput').value.trim();
     if (!name) { alert('Please enter your institute name.'); return; }
@@ -424,7 +407,7 @@
     document.getElementById('instInputRow').style.display = 'none';
     document.getElementById('instPrompt').style.display = 'none';
     document.getElementById('instSavedRow').style.display = 'flex';
-    document.getElementById('instSavedName').textContent = '✓ ' + name;
+    document.getElementById('instSavedName').textContent = 'âœ“ ' + name;
     document.getElementById('instituteBar').style.background = 'rgba(45,122,79,.07)';
     document.getElementById('instituteBar').style.borderColor = 'rgba(45,122,79,.25)';
   }
@@ -444,7 +427,7 @@
     return localStorage.getItem('workableai_institute') || '';
   }
 
-  // ── PRESETS ──
+  // â”€â”€ PRESETS â”€â”€
   const DEFAULT_PRESETS = {
     'jee-adv-phy':   { topic:'Newton\'s Laws of Motion', grade:'Class 12', board:'JEE Advanced', numQuestions:'10', difficulty:'hard',  qtype:'Multiple Choice (MCQ)', instructions:'Include assertion-reason questions. Follow NTA JEE Advanced pattern.' },
     'jee-main-chem': { topic:'Chemical Bonding', grade:'Class 12', board:'JEE Mains', numQuestions:'10', difficulty:'medium', qtype:'Multiple Choice (MCQ)', instructions:'Follow NTA JEE Mains single correct option pattern.' },
@@ -510,9 +493,9 @@
     Object.entries(saved).forEach(([key, p]) => {
       const chip = document.createElement('span');
       chip.className = 'preset-chip saved';
-      const label = p.label || (p.topic.length > 18 ? p.topic.slice(0,18) + '…' : p.topic);
-      chip.innerHTML = '📌 <span class="preset-label" style="cursor:pointer" ondblclick="renamePreset(\''+key+'\',this,event)">' + label + '</span>'
-        + ' <span class="del" onclick="deletePreset(\''+key+'\', event)" title="Delete">✕</span>';
+      const label = p.label || (p.topic.length > 18 ? p.topic.slice(0,18) + 'â€¦' : p.topic);
+      chip.innerHTML = 'ðŸ“Œ <span class="preset-label" style="cursor:pointer" ondblclick="renamePreset(\''+key+'\',this,event)">' + label + '</span>'
+        + ' <span class="del" onclick="deletePreset(\''+key+'\', event)" title="Delete">âœ•</span>';
       chip.onclick = (e) => { if (!e.target.classList.contains('del') && e.target.tagName !== 'INPUT') loadPreset(key); };
       bar.appendChild(chip);
     });
@@ -538,18 +521,13 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('workableai_key')) {
-      document.getElementById('apiSetupCard').style.display = 'none';
-    }
     renderSavedPresets();
     const savedInst = localStorage.getItem('workableai_institute');
     if (savedInst) showInstituteSaved(savedInst);
-    // Always show API card so user can update key
-    document.getElementById('apiSetupCard').style.display = 'block';
   });
 
 
-  // ── DRAG & DROP ──
+  // â”€â”€ DRAG & DROP â”€â”€
   ['bookUploadZone','styleUploadZone'].forEach(id => {
     const zone = document.getElementById(id);
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
@@ -589,7 +567,7 @@
         loaded++;
         if (loaded === files.length) {
           previews.style.display = 'block';
-          showFileStatus('bookFileStatus','success',`${bookImages.length} page${bookImages.length>1?'s':''} loaded — Claude will read and understand the content`);
+          showFileStatus('bookFileStatus','success',`${bookImages.length} page${bookImages.length>1?'s':''} loaded â€” Claude will read and understand the content`);
         }
       };
       reader.readAsDataURL(file);
@@ -608,7 +586,7 @@
       styleImageMime = file.type;
       document.getElementById('stylePreviewImg').src = dataUrl;
       document.getElementById('stylePreview').classList.add('active');
-      showFileStatus('styleFileStatus','success',`"${file.name}" loaded — AI will mimic this worksheet's layout`);
+      showFileStatus('styleFileStatus','success',`"${file.name}" loaded â€” AI will mimic this worksheet's layout`);
     };
     reader.readAsDataURL(file);
   }
@@ -623,7 +601,7 @@
     document.getElementById('loadingStatus').textContent = msg;
   }
 
-  // ── TEXT CLEANER ──
+  // â”€â”€ TEXT CLEANER â”€â”€
   function cleanText(text) {
     return text
       .replace(/\*\*([^*]+)\*\*/g, '$1')   // remove **bold**
@@ -638,7 +616,7 @@
       .trim();
   }
 
-  // ── WORKSHEET PREVIEW RENDERER ──
+  // â”€â”€ WORKSHEET PREVIEW RENDERER â”€â”€
   function renderPreview(text) {
     const preview = document.getElementById('worksheet-preview');
     const topic = document.getElementById('topic').value.trim() || 'Worksheet';
@@ -656,9 +634,9 @@
     html += '<div class="ws-header-bar">AI WORKSHEET GENERATOR</div>';
     html += '<div class="ws-institute' + (instName ? '' : ' blank') + '">' + (instName || 'Your Institute Name') + '</div>';
     html += '<div class="ws-title">' + topic.toUpperCase() + '</div>';
-    let metaPrev = board + (board && grade ? ' · ' : '') + grade + ' · ' + numQ + ' Questions · ' + difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-    if (timeLimitPrev) metaPrev += ' · Time: ' + timeLimitPrev + ' min';
-    metaPrev += ' · Total Marks: ' + totalMarksPrev;
+    let metaPrev = board + (board && grade ? ' Â· ' : '') + grade + ' Â· ' + numQ + ' Questions Â· ' + difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    if (timeLimitPrev) metaPrev += ' Â· Time: ' + timeLimitPrev + ' min';
+    metaPrev += ' Â· Total Marks: ' + totalMarksPrev;
     html += '<div class="ws-meta">' + metaPrev + '</div>';
     html += '<hr class="ws-divider-gold"/>';
     html += '<div class="ws-fields"><div class="ws-field"><span>NAME</span><br/>&nbsp;</div><div class="ws-field"><span>DATE</span><br/>&nbsp;</div><div class="ws-field"><span>ROLL NO</span><br/>&nbsp;</div><div class="ws-field"><span>MARKS</span><br/>&nbsp;</div></div>';
@@ -690,15 +668,8 @@
     preview.innerHTML = html;
   }
 
-  // ── MAIN GENERATE ──
+  // â”€â”€ MAIN GENERATE â”€â”€
   async function generateWorksheet() {
-    const apiKey = localStorage.getItem('workableai_key');
-    if (!apiKey) {
-      document.getElementById('apiSetupCard').style.display = 'block';
-      document.getElementById('apiSetupCard').scrollIntoView({ behavior: 'smooth' });
-      return;
-    }
-
     const topic = document.getElementById('topic').value.trim();
     const grade = document.getElementById('grade').value;
     const numQ = document.getElementById('numQuestions').value;
@@ -762,7 +733,7 @@ SECTION III - NON-NEGATIVE INTEGER TYPE
 FORMAT RULES (CRITICAL):
 - Never use markdown. No asterisks, no **bold**, no _italic_, no --- dividers.
 - Never use &nbsp; or HTML entities.
-- Plain text only — for print.
+- Plain text only â€” for print.
 - Number questions as Q1. Q2. etc.
 - MCQ options on separate lines: A) B) C) D)
 - State marking scheme at the start of each section exactly as shown above.
@@ -821,9 +792,9 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
 - Clear title showing subject and topic
 - Student instructions line
 - All ${numQ} questions clearly numbered with marks in brackets e.g. [1 mark]
-  • MCQ: 4 options labeled A) B) C) D)
-  • Short Answer: Ans: ___________
-  • Fill in Blanks: _______
+  â€¢ MCQ: 4 options labeled A) B) C) D)
+  â€¢ Short Answer: Ans: ___________
+  â€¢ Fill in Blanks: _______
 - ANSWER KEY section at the very end`;
     }
 
@@ -848,15 +819,6 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
         const msg = err?.error?.message || `API error ${response.status}`;
-        // Show friendly message for bad key
-        if (response.status === 401) {
-          localStorage.removeItem('workableai_key');
-          document.getElementById('apiSetupCard').style.display = 'block';
-          loading.classList.remove('active');
-          document.getElementById('generateBtn').disabled = false;
-          document.getElementById('apiSetupCard').scrollIntoView({ behavior: 'smooth' });
-          return;
-        }
         throw new Error(msg);
       }
 
@@ -877,7 +839,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       loading.classList.remove('active');
       preview.style.display = 'block';
       preview.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--muted)">
-        <div style="font-size:2rem;margin-bottom:16px">⚠️</div>
+        <div style="font-size:2rem;margin-bottom:16px">âš ï¸</div>
         <p style="font-family:'Fraunces',Georgia,serif;font-size:1.1rem;color:var(--primary);margin-bottom:8px">Something went wrong</p>
         <p style="font-size:.9rem;color:#B84040;font-family:'JetBrains Mono',monospace;margin-bottom:8px">${err.message}</p>
         <p style="font-size:.9rem">Please tap <strong>Regenerate</strong> to try again.</p>
@@ -888,7 +850,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     document.getElementById('generateBtn').disabled = false;
   }
 
-  // ── IMAGE FETCH ──
+  // â”€â”€ IMAGE FETCH â”€â”€
   async function fetchImages(topic) {
     const section = document.getElementById('image-section');
     const grid = document.getElementById('img-grid');
@@ -905,7 +867,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     selectedImageDataUrl = '';
 
     try {
-      // Use Wikipedia API — free, no key, educational images
+      // Use Wikipedia API â€” free, no key, educational images
       const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(topic)}&prop=pageimages&pithumbsize=400&pilimit=1&format=json&origin=*`;
       const searchRes = await fetch(searchUrl);
       const searchData = await searchRes.json();
@@ -995,7 +957,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     btn.classList.add('active');
   }
 
-  // ── PDF DOWNLOAD ──
+  // â”€â”€ PDF DOWNLOAD â”€â”€
   async function downloadPDF() {
     if (!lastGeneratedText) { alert('Generate a worksheet first!'); return; }
     const { jsPDF } = window.jspdf;
@@ -1040,7 +1002,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(100, 100, 100);
-      doc.text(board + ' · ' + grade, margin, y);
+      doc.text(board + ' Â· ' + grade, margin, y);
       doc.text('Page ' + pageNum, 210 - rmargin, y, { align: 'right' });
       y += 7;
 
@@ -1057,8 +1019,8 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       const timeLimitVal = document.getElementById('timeLimit').value;
       const marksPerQVal = document.getElementById('marksPerQ').value;
       const totalMarksVal = parseInt(numQ) * parseInt(marksPerQVal);
-      let metaLine = numQ + ' Questions  ·  ' + diff + '  ·  Total: ' + totalMarksVal + ' Marks';
-      if (timeLimitVal) metaLine += '  ·  Time: ' + timeLimitVal + ' min';
+      let metaLine = numQ + ' Questions  Â·  ' + diff + '  Â·  Total: ' + totalMarksVal + ' Marks';
+      if (timeLimitVal) metaLine += '  Â·  Time: ' + timeLimitVal + ' min';
       doc.text(metaLine, 210/2, y, { align: 'center' });
       y += 5;
 
@@ -1097,7 +1059,7 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 120);
-      doc.text(board + ' · ' + grade + ' · Page ' + pageNum, 210 - rmargin, y, { align: 'right' });
+      doc.text(board + ' Â· ' + grade + ' Â· Page ' + pageNum, 210 - rmargin, y, { align: 'right' });
       doc.setDrawColor(200, 200, 200);
       doc.setLineWidth(0.3);
       doc.line(margin, y + 3, 210 - rmargin, y + 3);
@@ -1243,7 +1205,6 @@ ${instructions ? `SPECIAL INSTRUCTIONS: ${instructions}` : ''}`;
     doc.save((t + '_' + g + '_worksheet.pdf').replace(/\s+/g,'_').toLowerCase());
   }
   
-  window.WORKABLE_BACKEND_ENDPOINT = '/api/generate-worksheet';
 </script>
 </body>
 </html>

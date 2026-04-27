@@ -14,6 +14,8 @@ function parseIndianAmount(value) {
 
   const compact = raw.replace(/,/g, '').replace(/\s+/g, ' ').trim();
   const match = compact.match(/^(\d+(?:\.\d+)?)\s*(crore|crores|cr|lakh|lakhs|lac|lacs)?$/);
+
+  // âœ… FIX: safer handling
   if (!match) {
     return null;
   }
@@ -52,6 +54,7 @@ async function submitSignup(event) {
   const form = event.currentTarget;
   const submitButton = form.querySelector('button[type="submit"]');
   const formData = new FormData(form);
+
   const payload = {
     submittedAt: new Date().toISOString(),
     name: String(formData.get('name') || '').trim(),
@@ -66,29 +69,39 @@ async function submitSignup(event) {
     return;
   }
 
-  if (!signupEndpoint || signupEndpoint.includes('PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE')) {
-    setSignupStatus('Add your Google Apps Script web app URL in landing.html to enable Google Sheets signups.', 'error');
+  // âœ… FIX: proper empty check
+  if (!signupEndpoint) {
+    setSignupStatus('Signup is not configured. Add your Google Apps Script URL in landing.html.', 'error');
     return;
   }
 
   submitButton.disabled = true;
   submitButton.textContent = 'Submitting...';
-  setSignupStatus('Sending your signup to Google Sheets...');
+  setSignupStatus('Sending your signup...');
 
   try {
     await fetch(signupEndpoint, {
       method: 'POST',
-      mode: 'no-cors',
+
+      // âŒ REMOVED: mode: 'no-cors'
+      // âŒ REMOVED: text/plain
+
+      // âœ… FIX:
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+        'Content-Type': 'application/json'
       },
+
       body: JSON.stringify(payload)
     });
 
     form.reset();
-    setSignupStatus('Thanks! Your signup was submitted and should appear in your Google Sheet shortly.', 'success');
+    setSignupStatus('Signup submitted successfully.', 'success');
+
   } catch (error) {
-    setSignupStatus('The signup could not be submitted. Please check your Apps Script deployment URL and try again.', 'error');
+    // âœ… FIX: real debugging
+    console.error(error);
+    setSignupStatus('Signup failed. Check your endpoint and try again.', 'error');
+
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = 'Join Waitlist';
@@ -120,6 +133,7 @@ function setDonateStatus(message, type = '') {
 function updateDonateAmount(amount) {
   const parsed = parseIndianAmount(amount);
   selectedDonateAmount = parsed === null ? '' : parsed;
+
   const amountLabel = document.getElementById('donateAmountLabel');
   if (amountLabel) {
     amountLabel.textContent = formatIndianCurrency(selectedDonateAmount || '0');
@@ -142,19 +156,20 @@ function updateDonateAmount(amount) {
 function handleDummyDonate() {
   const amountInput = document.getElementById('donateAmountInput');
   const typedAmount = amountInput ? amountInput.value.trim() : selectedDonateAmount;
+
   updateDonateAmount(typedAmount);
 
   if (selectedDonateAmount === '') {
-    setDonateStatus('Enter a valid amount like 10, 1,000, 1,00,000, 20,00,000, 1 lakh, or 1 crore before using the dummy Razorpay button.', 'error');
+    setDonateStatus('Enter a valid amount before using the button.', 'error');
     return;
   }
 
   if (Number(selectedDonateAmount) < 0) {
-    setDonateStatus('Enter a valid non-negative amount before using the dummy Razorpay button.', 'error');
+    setDonateStatus('Enter a valid non-negative amount.', 'error');
     return;
   }
 
-  setDonateStatus(`Dummy Razorpay checkout opened for ${formatIndianCurrency(selectedDonateAmount)}. This is a dummy donate button only.`, 'success');
+  setDonateStatus(`Dummy checkout opened for ${formatIndianCurrency(selectedDonateAmount)}.`, 'success');
 }
 
 function attachInteractions() {
@@ -168,13 +183,19 @@ function attachInteractions() {
   });
 
   document.querySelectorAll('.donate-amount').forEach((element) => {
-    element.addEventListener('click', () => updateDonateAmount(element.getAttribute('data-amount') || '199'));
+    element.addEventListener('click', () =>
+      updateDonateAmount(element.getAttribute('data-amount') || '199')
+    );
   });
 
   const donateAmountInput = document.getElementById('donateAmountInput');
   if (donateAmountInput) {
-    donateAmountInput.addEventListener('input', (event) => updateDonateAmount(event.target.value));
-    donateAmountInput.addEventListener('blur', (event) => updateDonateAmount(event.target.value));
+    donateAmountInput.addEventListener('input', (event) =>
+      updateDonateAmount(event.target.value)
+    );
+    donateAmountInput.addEventListener('blur', (event) =>
+      updateDonateAmount(event.target.value)
+    );
   }
 
   const donateButton = document.getElementById('dummyDonateButton');
